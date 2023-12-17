@@ -28,6 +28,8 @@ class Contract(models.Model):
     remaining_amount = models.DecimalField(max_digits=10, decimal_places=2)
     creation_date = models.DateField()
     is_signed = models.BooleanField(default=False)
+    def __str__(self):
+        return str(self.id)
     
    
 
