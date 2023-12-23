@@ -30,6 +30,7 @@ class Contract(models.Model):
     is_signed = models.BooleanField(default=False)
     def __str__(self):
         return str(self.id)
+        
     
    
 

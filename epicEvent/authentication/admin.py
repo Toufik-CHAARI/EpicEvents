@@ -5,6 +5,6 @@ from authentication.models import CustomUser
 
 
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ("username","pk")
+    list_display = ("username","pk","role")
     
 admin.site.register(CustomUser,CustomUserAdmin)

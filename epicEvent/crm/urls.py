@@ -1,4 +1,5 @@
 from django.urls import path, include
+from .views import CommercialUnsignedContractsView,CommercialRemainingAmountContractsView
 from rest_framework.routers import DefaultRouter
 from .views import (
     ClientViewSet,
@@ -14,4 +15,6 @@ router.register(r"event", EventViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
+    path('contracts/commercial/unsigned/', CommercialUnsignedContractsView.as_view(), name='commercial-unsigned-contracts'),
+    path('contracts/commercial/remaining-amount/', CommercialRemainingAmountContractsView.as_view(), name='commercial-remaining-amount-contracts'),
 ]
