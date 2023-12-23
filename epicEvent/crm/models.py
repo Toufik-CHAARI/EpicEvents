@@ -2,7 +2,7 @@ from django.db import models
 from authentication.models import CustomUser
 from django.conf import settings
 
-# Create your models here.
+
 class Client(models.Model):
     full_name = models.CharField(max_length=255)
     email = models.EmailField()
