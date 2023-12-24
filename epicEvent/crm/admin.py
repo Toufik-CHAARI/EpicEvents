@@ -27,6 +27,6 @@ admin.site.register(Contract,ContractAdmin)
 
 
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("contract","location")
+    list_display = ("contract","location","id")
 
 admin.site.register(Event,EventAdmin)

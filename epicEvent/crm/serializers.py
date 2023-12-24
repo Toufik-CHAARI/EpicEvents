@@ -24,15 +24,18 @@ class EventSerializer(serializers.ModelSerializer):
     def validate(self, data):
         user = self.context['request'].user
         contract = data.get('contract')
+        event = self.instance         
+    
+        if contract and not contract.is_signed:
+            raise serializers.ValidationError("The contract is not signed.")       
         
-        if not contract.is_signed:
-            raise serializers.ValidationError("The contract is not signed.")
+        if user.role == 'management':
+            return data
         
+        if user.role == 'support' and event and event.support_contact == user:
+            return data
         
-        
-        # Allow management users to bypass the sales_contact check
-        if user.role != 'management':
-            if contract.client.sales_contact != user:
-                raise serializers.ValidationError("You are not assigned to this client.")
+        if user.role == 'commercial' and contract.client.sales_contact != user:
+            raise serializers.ValidationError("You are not assigned to this client.")
 
         return data

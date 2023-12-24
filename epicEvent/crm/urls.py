@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CommercialUnsignedContractsView,CommercialRemainingAmountContractsView,NullSupportEventsView
+from .views import CommercialUnsignedContractsView,CommercialRemainingAmountContractsView,NullSupportEventsView,SupportAssignedEventsView
 from rest_framework.routers import DefaultRouter
 from .views import (
     ClientViewSet,
@@ -12,6 +12,8 @@ router.register(r"client", ClientViewSet)
 router.register(r"contract", ContractViewSet)
 router.register(r"event", EventViewSet)
 router.register(r'null-role-events', NullSupportEventsView, basename='null-role-events')
+router.register(r'support-events', SupportAssignedEventsView, basename='support-events')
+
 
 
 urlpatterns = [

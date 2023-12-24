@@ -34,5 +34,12 @@ class ManagementOrSuperuserAccess(permissions.BasePermission):
         return request.user.is_authenticated and (
             request.user.is_superuser or request.user.role == 'management'
         )
+        
+class IsSupportUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        
+        return request.user.is_authenticated and request.user.role == 'support'
 
-    
+    def has_object_permission(self, request, view, obj):
+        
+        return obj.support_contact == request.user if view.action in ['update', 'partial_update'] else True
