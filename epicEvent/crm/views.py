@@ -1,7 +1,12 @@
 from rest_framework import viewsets,permissions,generics
+from django.shortcuts import get_object_or_404
 from .models import Client, Contract, Event
 from .serializers import ClientSerializer, ContractSerializer, EventSerializer
-from authentication.permissions import IsCommercialUser,CommercialUpdateAssignedOrManagementFullAccess,ManagementOrSuperuserAccess,IsSupportUser
+from authentication.permissions import IsCommercialUser,ManagementOrSuperuserAccess,IsSupportUser,DenyAll,IsCommercial,IsManagement,IsSupport,IsNotCommercial,IsCommercialUserCont,ManagementOnlyAccess
+from django.core.exceptions import PermissionDenied
+from rest_framework.response import Response
+from rest_framework import status
+
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -9,12 +14,15 @@ class ClientViewSet(viewsets.ModelViewSet):
     serializer_class = ClientSerializer
     
     def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [permissions.IsAuthenticated()]
         
-        if self.action == 'create':
-           
+        if self.action in ['create', 'update', 'partial_update']:           
             return [IsCommercialUser()]
-        elif self.action in ['update', 'partial_update']:            
-            return [ManagementOrSuperuserAccess()]        
+             
+        if self.action == 'destroy':
+            return [DenyAll()]
+
         return [permissions.IsAuthenticated()]
     
     def perform_create(self, serializer):       
@@ -24,45 +32,48 @@ class ClientViewSet(viewsets.ModelViewSet):
 class ContractViewSet(viewsets.ModelViewSet):
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
-    def get_permissions(self):        
-        if self.action in ['create', 'update', 'partial_update', 'destroy']:            
-            if self.request.user.is_superuser or self.request.user.role == 'management':
-                return [ManagementOrSuperuserAccess()]
-           
-            elif self.request.user.role == 'commercial':
-                return [CommercialUpdateAssignedOrManagementFullAccess()]
-            else:
-               
-                return [permissions.IsAdminUser()]
-        
-        
-        return [permissions.IsAuthenticated()]
-
-    def get_queryset(self):
-        
-        return Contract.objects.all()
-    
-    
-      
-    
-    
-
-class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer    
-    #permission_classes = [permissions.IsAuthenticated]
-    #permission_classes = [IsCommercialUser]
     def get_permissions(self):
-        if self.request.user.is_superuser or self.request.user.role == 'management':
-            return [ManagementOrSuperuserAccess()]        
-        elif self.request.user.role == 'support':           
-            if self.action in ['update', 'partial_update']:
-                return [IsSupportUser()]            
+        if self.action in ['create', 'update', 'partial_update']:
+            if self.request.user.role == 'management':
+                return [ManagementOnlyAccess()]
+            elif self.request.user.role == 'commercial':
+                return [IsCommercialUserCont()]
+            else:
+                return [DenyAll()]
+        elif self.action == 'destroy':
+            return [DenyAll()]
+        elif self.action in ['list', 'retrieve']:
+            if self.request.user.role == 'support':
+                return [IsSupport()]
             return [permissions.IsAuthenticated()]
         else:
             return [permissions.IsAuthenticated()]
-    def get_queryset(self):    
-        return super().get_queryset()
+    
+    
+      
+  
+
+class EventViewSet(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer 
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [permissions.IsAuthenticated]
+        elif self.action == 'create':
+            permission_classes = [IsCommercial]
+        elif self.action in ['update', 'partial_update']:
+            permission_classes = [IsManagement | IsSupport,IsNotCommercial]
+        else:
+            
+            permission_classes = [permissions.IsAdminUser]
+        return [permission() for permission in permission_classes]   
+    
+
+    def destroy(self, request, *args, **kwargs):        
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+       
     
         
     
@@ -98,3 +109,4 @@ class SupportAssignedEventsView(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):        
         return Event.objects.filter(support_contact=self.request.user)
+    
