@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 from rest_framework import status
-from crm.models import Client
+from crm.models import Client,Contract
 from rest_framework.test import APIClient
 from unittest.mock import Mock, patch
 from django.contrib.auth import get_user_model
@@ -15,6 +15,8 @@ from rest_framework.response import Response
 @pytest.fixture
 def api_client():
     return APIClient()
+
+
 
 @pytest.fixture
 def client_data():
@@ -231,6 +233,7 @@ def client_assigned_to_commercial(mocker, commercial_user):
 @pytest.fixture
 def signed_contract(mocker, client_assigned_to_commercial, commercial_user):
     mock_signed_contract = MagicMock()
+    mock_signed_contract.id = int(1)
     mock_signed_contract.client = client_assigned_to_commercial
     mock_signed_contract.sales_contact = commercial_user
     mock_signed_contract.is_signed = True
@@ -239,37 +242,118 @@ def signed_contract(mocker, client_assigned_to_commercial, commercial_user):
 @pytest.fixture
 def unsigned_contract(mocker, client_assigned_to_commercial, commercial_user):
     mock_unsigned_contract = MagicMock()
+    mock_unsigned_contract.id = int(1) 
     mock_unsigned_contract.client = client_assigned_to_commercial
     mock_unsigned_contract.sales_contact = commercial_user
     mock_unsigned_contract.is_signed = False
     return mock_unsigned_contract
 
+
 @pytest.fixture
-def event_data(signed_contract):
-    return {
-        'contract': signed_contract.id,
+def event_data():
+    def _event_data(contract):
+        return {
+            'contract': int(contract.id) if contract else None,
+            'event_date': '2023-01-10',
+            'start_date': '2023-01-15',
+            'end_date': '2023-01-20',
+            'location': 'Test Location',
+            'attendees': 50,
+            'client_name': int(contract.client.id) if contract and contract.client else None,
+            'notes': 'Test Event'
+        }
+    return _event_data
+
+
+@pytest.fixture
+def test_client(db):
+    # Create and return a test client
+    return Client.objects.create(
+        full_name="Test Client",
+        email="testclient@example.com",
+        phone="1234567890",
+        company_name="Test Company",
+        creation_date="2023-01-15",
+        last_update="2023-01-15"
+        # Add other fields as required by your Client model
+    )
+@pytest.fixture
+def test_contract(db, test_client, commercial_user):
+    # Use the test_client and commercial_user fixtures
+    test_client.sales_contact = commercial_user
+    test_client.save()
+    return Contract.objects.create(
+        client=test_client,
+        sales_contact=commercial_user,
+        total_amount=1000,
+        remaining_amount=0,
+        creation_date='2023-01-15',
+        is_signed=True,
+        # Set other required fields for Contract
+    )
+def test_create_event_signed_contract(api_client, test_contract, commercial_user):
+    api_client.force_authenticate(user=commercial_user)
+    event_data = {
+        'contract': test_contract.id,
         'event_date': '2023-01-10',
         'start_date': '2023-01-15',
         'end_date': '2023-01-20',
         'location': 'Test Location',
         'attendees': 50,
-        'client_name': signed_contract.client.id,
+        'client_name': test_contract.client.id,
         'notes': 'Test Event'
     }
-
-
-def test_create_event_signed_contract(mocker, commercial_user, api_client, event_data):
-    mocker.patch('crm.models.Event.objects.create')  
-
-    api_client.force_authenticate(user=commercial_user)
     response = api_client.post(reverse('event-list'), event_data)
-
+    print(response.data)
     assert response.status_code == status.HTTP_201_CREATED
+    
+    
+'''
+def test_create_event_signed_contract(mocker, commercial_user, api_client, event_data, signed_contract):
+    with patch('crm.models.Contract.objects.get', return_value=signed_contract), \
+         patch('crm.models.Client.objects.get', return_value=signed_contract.client):
+        signed_event_data = event_data(signed_contract)
+        api_client.force_authenticate(user=commercial_user)
+        response = api_client.post(reverse('event-list'), signed_event_data)
 
+        print(response.data)
+        assert response.status_code == status.HTTP_201_CREATED
+'''
 def test_create_event_unsigned_contract(mocker, commercial_user, api_client, event_data, unsigned_contract):
-    mocker.patch('crm.models.Event.objects.create')  
-
+    unsigned_event_data = event_data(unsigned_contract)
+    mocker.patch('crm.models.Event.objects.create')
     api_client.force_authenticate(user=commercial_user)
-    response = api_client.post(reverse('event-list'), event_data)    
+    response = api_client.post(reverse('event-list'), unsigned_event_data)
+   
+    assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    print(response.data)  # Debugging line
+
+def test_commercial_user_cannot_access_user_list(commercial_user, api_client):
+    api_client.force_authenticate(user=commercial_user)
+    url = reverse('user-list')
+    response = api_client.get(url) 
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+def test_commercial_user_cannot_create_user(commercial_user, api_client):
+    api_client.force_authenticate(user=commercial_user)    
+    url = reverse('user-create')
+    response = api_client.get(url)
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+def test_commercial_user_cannot_access_user_detail(commercial_user, api_client):
+    api_client.force_authenticate(user=commercial_user)    
+    url = reverse('user-detail',args=[commercial_user.id])
+    response = api_client.get(url)
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+def test_commercial_user_cannot_update_user(commercial_user, api_client):
+    api_client.force_authenticate(user=commercial_user)
+    url = reverse('user-update',args=[commercial_user.id])
+    response = api_client.get(url)    
+    assert response.status_code == status.HTTP_403_FORBIDDEN
+
+def test_commercial_user_cannot_delete_user(commercial_user, api_client):
+    api_client.force_authenticate(user=commercial_user)
+    url = reverse('user-delete',args=[commercial_user.id])
+    response = api_client.get(url)    
+    assert response.status_code == status.HTTP_403_FORBIDDEN

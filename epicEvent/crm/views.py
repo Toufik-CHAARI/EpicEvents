@@ -63,9 +63,10 @@ class EventViewSet(viewsets.ModelViewSet):
         elif self.action == 'create':
             permission_classes = [IsCommercial]
         elif self.action in ['update', 'partial_update']:
-            permission_classes = [IsManagement | IsSupport,IsNotCommercial]
-        else:
-            
+                permission_classes = [IsManagement | IsSupport,IsNotCommercial]
+        elif self.action == 'destroy':
+            permission_classes = [DenyAll]
+        else:            
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]   
     

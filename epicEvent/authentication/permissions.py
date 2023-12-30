@@ -34,6 +34,7 @@ class IsCommercialUser(permissions.BasePermission):
             elif hasattr(obj, 'client'):  
                 return obj.client.sales_contact == request.user
         return True  
+    
     def can_create_event(self, request, view):
         # Ensure the request data contains 'contract' and it's a signed contract
         contract_id = request.data.get('contract')
@@ -45,20 +46,7 @@ class IsCommercialUser(permissions.BasePermission):
                 return False
         return False
     
-    
-class CommercialUpdateAssignedOrManagementFullAccess(permissions.BasePermission):
-    def has_permission(self, request, view):        
-        if request.user.is_superuser or request.user.role == 'management':
-            return True
-        elif request.user.role == 'commercial' and view.action in ['list', 'retrieve']:
-            return True
-        return False
 
-    def has_object_permission(self, request, view, obj):        
-        if view.action in ['update', 'partial_update']:
-            return obj.sales_contact == request.user
-        return False
-    
 class ManagementOrSuperuserAccess(permissions.BasePermission):
     def has_permission(self, request, view):
         
@@ -78,8 +66,7 @@ class IsSupportUser(permissions.BasePermission):
 class IsCommercialUserCont(permissions.BasePermission):
     def has_permission(self, request, view):
         if view.action == 'create':
-            return False
-        
+            return False        
         return request.user.is_authenticated and request.user.role == 'commercial'
 
     def has_object_permission(self, request, view, obj):
@@ -98,37 +85,6 @@ class DenyAll(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         return False
-    
-class CanCreateEventForSignedContract(permissions.BasePermission):
-    def has_permission(self, request, view):
-        contract_id = request.data.get('contract')
-        if contract_id:
-            contract = Contract.objects.filter(id=contract_id, is_signed=True).first()
-            return contract and contract.client.sales_contact == request.user         
-        
-        return False
-    
-class IsCommercialUserAssigned(permissions.BasePermission):
-    """Allow commercial users to create events for assigned clients with signed contracts."""
-    def has_permission(self, request, view):
-        if view.action == 'create':
-            contract_id = request.data.get('contract')
-            contract = get_object_or_404(Contract, pk=contract_id)
-            return contract.is_signed and contract.client.sales_contact == request.user
-        return True
-    def has_object_permission(self, request, view, obj):
-            return True  # Commercial users can view all events but not necessarily modify them
-        
-class IsSupportUserAssigned(permissions.BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return obj.contract.client.support_contact == request.user
-    def has_object_permission(self, request, view, obj):
-        return obj.support_contact == request.user if view.action in ['update', 'partial_update'] else True
-
-class DenyDelete(permissions.BasePermission):
-    """Deny delete permission to all users."""
-    def has_object_permission(self, request, view, obj):
-        return view.action != 'destroy'
 
 class IsCommercial(permissions.BasePermission):
     def has_permission(self, request, view):        
@@ -143,8 +99,6 @@ class IsNotCommercial(permissions.BasePermission):
     def has_permission(self, request, view):        
         return not (request.user.is_authenticated and request.user.role == 'commercial' and view.action in ['update', 'partial_update'])
 
-
-
 class IsManagement(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role == 'management'
@@ -158,3 +112,51 @@ class IsSupport(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):        
         return obj.support_contact == request.user
+    
+    
+    
+'''    
+class CanCreateEventForSignedContract(permissions.BasePermission):
+    def has_permission(self, request, view):
+        contract_id = request.data.get('contract')
+        if contract_id:
+            contract = Contract.objects.filter(id=contract_id, is_signed=True).first()
+            return contract and contract.client.sales_contact == request.user         
+        
+        return False
+     
+class IsCommercialUserAssigned(permissions.BasePermission):
+    """Allow commercial users to create events for assigned clients with signed contracts."""
+    def has_permission(self, request, view):
+        if view.action == 'create':
+            contract_id = request.data.get('contract')
+            contract = get_object_or_404(Contract, pk=contract_id)
+            return contract.is_signed and contract.client.sales_contact == request.user
+        return True
+    def has_object_permission(self, request, view, obj):
+            return True  # Commercial users can view all events but not necessarily modify them
+       
+class IsSupportUserAssigned(permissions.BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.contract.client.support_contact == request.user
+    def has_object_permission(self, request, view, obj):
+        return obj.support_contact == request.user if view.action in ['update', 'partial_update'] else True
+
+class DenyDelete(permissions.BasePermission):
+    """Deny delete permission to all users."""
+    def has_object_permission(self, request, view, obj):
+        return view.action != 'destroy'
+  
+class CommercialUpdateAssignedOrManagementFullAccess(permissions.BasePermission):
+    def has_permission(self, request, view):        
+        if request.user.is_superuser or request.user.role == 'management':
+            return True
+        elif request.user.role == 'commercial' and view.action in ['list', 'retrieve']:
+            return True
+        return False
+
+    def has_object_permission(self, request, view, obj):        
+        if view.action in ['update', 'partial_update']:
+            return obj.sales_contact == request.user
+        return False
+'''
