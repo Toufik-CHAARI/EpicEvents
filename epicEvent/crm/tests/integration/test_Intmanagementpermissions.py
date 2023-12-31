@@ -5,7 +5,7 @@ from django.contrib.auth.models import Permission
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from django.contrib.contenttypes.models import ContentType
-from crm.models import Client,CustomUser, Contract,Event  # Replace with your actual model path
+from crm.models import Client,CustomUser, Contract,Event  
 from datetime import date
 import datetime
 from django.utils import timezone
@@ -36,10 +36,9 @@ class TestManagementUserClientAccess:
             response = self.client.post(url, {'name': 'New Client'})  
             assert response.status_code == status.HTTP_403_FORBIDDEN
             
-        def test_management_cannot_update_client(self):
-        
+        def test_management_cannot_update_client(self):        
             url = reverse('client-detail', args=[1])
-            response = self.client.patch(url, {'name': 'Updated Client'})  # Adjust the payload as needed
+            response = self.client.patch(url, {'name': 'Updated Client'})  
             assert response.status_code == status.HTTP_403_FORBIDDEN
 
         def test_management_cannot_delete_client(self):

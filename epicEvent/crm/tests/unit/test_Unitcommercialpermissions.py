@@ -10,8 +10,6 @@ from unittest.mock import MagicMock
 from rest_framework.response import Response
 
 
-
-
 @pytest.fixture
 def api_client():
     return APIClient()
@@ -266,8 +264,7 @@ def event_data():
 
 
 @pytest.fixture
-def test_client(db):
-    # Create and return a test client
+def test_client(db):    
     return Client.objects.create(
         full_name="Test Client",
         email="testclient@example.com",
@@ -275,11 +272,10 @@ def test_client(db):
         company_name="Test Company",
         creation_date="2023-01-15",
         last_update="2023-01-15"
-        # Add other fields as required by your Client model
+        
     )
 @pytest.fixture
-def test_contract(db, test_client, commercial_user):
-    # Use the test_client and commercial_user fixtures
+def test_contract(db, test_client, commercial_user):    
     test_client.sales_contact = commercial_user
     test_client.save()
     return Contract.objects.create(
@@ -289,7 +285,7 @@ def test_contract(db, test_client, commercial_user):
         remaining_amount=0,
         creation_date='2023-01-15',
         is_signed=True,
-        # Set other required fields for Contract
+        
     )
 def test_create_event_signed_contract(api_client, test_contract, commercial_user):
     api_client.force_authenticate(user=commercial_user)
@@ -308,17 +304,7 @@ def test_create_event_signed_contract(api_client, test_contract, commercial_user
     assert response.status_code == status.HTTP_201_CREATED
     
     
-'''
-def test_create_event_signed_contract(mocker, commercial_user, api_client, event_data, signed_contract):
-    with patch('crm.models.Contract.objects.get', return_value=signed_contract), \
-         patch('crm.models.Client.objects.get', return_value=signed_contract.client):
-        signed_event_data = event_data(signed_contract)
-        api_client.force_authenticate(user=commercial_user)
-        response = api_client.post(reverse('event-list'), signed_event_data)
 
-        print(response.data)
-        assert response.status_code == status.HTTP_201_CREATED
-'''
 def test_create_event_unsigned_contract(mocker, commercial_user, api_client, event_data, unsigned_contract):
     unsigned_event_data = event_data(unsigned_contract)
     mocker.patch('crm.models.Event.objects.create')
@@ -357,3 +343,15 @@ def test_commercial_user_cannot_delete_user(commercial_user, api_client):
     url = reverse('user-delete',args=[commercial_user.id])
     response = api_client.get(url)    
     assert response.status_code == status.HTTP_403_FORBIDDEN
+    
+'''
+def test_create_event_signed_contract(mocker, commercial_user, api_client, event_data, signed_contract):
+    with patch('crm.models.Contract.objects.get', return_value=signed_contract), \
+         patch('crm.models.Client.objects.get', return_value=signed_contract.client):
+        signed_event_data = event_data(signed_contract)
+        api_client.force_authenticate(user=commercial_user)
+        response = api_client.post(reverse('event-list'), signed_event_data)
+
+        print(response.data)
+        assert response.status_code == status.HTTP_201_CREATED
+'''

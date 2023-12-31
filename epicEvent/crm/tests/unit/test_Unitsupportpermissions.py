@@ -16,7 +16,7 @@ def management_user(db):
     User = get_user_model()
     return User.objects.create_user(username='manager', password='testpass123', role='management')
 
-# Mocking support user
+
 @pytest.fixture
 def support_user(db):    
     User = get_user_model()

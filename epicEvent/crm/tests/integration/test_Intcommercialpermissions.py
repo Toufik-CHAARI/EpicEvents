@@ -85,7 +85,7 @@ def test_management_user_read_only_access(management_user, api_client, client_da
 @pytest.mark.django_db
 def test_authenticated_user_view_client_details(api_client, client_data, commercial_user):
     client = Client.objects.create(**client_data, sales_contact=commercial_user)
-    api_client.force_authenticate(user=commercial_user)  # authenticating with any user
+    api_client.force_authenticate(user=commercial_user)  
     response = api_client.get(reverse('client-detail', args=[client.id]))
     assert response.status_code == status.HTTP_200_OK
     assert response.data['full_name'] == 'Test Client'
@@ -230,7 +230,7 @@ def test_commercial_user_update_contract(commercial_user_for_contract_test, api_
         'sales_contact': contract_data_for_contract_test.sales_contact.id,
         'total_amount': 1200.00,
         'remaining_amount': 600.00,
-        'creation_date': contract_data_for_contract_test.creation_date,  # Assuming it's already in the correct format
+        'creation_date': contract_data_for_contract_test.creation_date,  
         'is_signed': True
     }
 
