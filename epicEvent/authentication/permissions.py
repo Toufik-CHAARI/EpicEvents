@@ -104,7 +104,11 @@ class IsManagement(permissions.BasePermission):
         return request.user.is_authenticated and request.user.role == 'management'
 
     def has_object_permission(self, request, view, obj):        
-        return request.method in permissions.SAFE_METHODS or request.method == 'PUT'
+        #return request.method in permissions.SAFE_METHODS or request.method == 'PUT'
+        return (
+            request.method in permissions.SAFE_METHODS or
+            request.method in ['PUT', 'PATCH']
+        )
 
 class IsSupport(permissions.BasePermission):
     def has_permission(self, request, view):
