@@ -1,6 +1,11 @@
 from django.db import models
 from authentication.models import CustomUser
 from django.conf import settings
+from django.db.models.signals import post_save,post_delete
+from django.dispatch import receiver
+import sentry_sdk
+
+
 
 
 class Client(models.Model):
@@ -51,3 +56,16 @@ class Event(models.Model):
         return self.location
 
 
+@receiver(post_save, sender=Client)
+@receiver(post_save, sender=Contract)
+@receiver(post_save, sender=Event)
+@receiver(post_delete, sender=Client)
+@receiver(post_delete, sender=Contract)
+@receiver(post_delete, sender=Event)
+def model_changes(sender, instance, **kwargs):
+    if 'created' in kwargs:
+        action = "created" if kwargs['created'] else "updated"
+    else:
+        action = "deleted"
+
+    sentry_sdk.capture_message(f"{sender.__name__} {action}: {instance.id}")
