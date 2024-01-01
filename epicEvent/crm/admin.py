@@ -2,7 +2,6 @@ from django.contrib import admin
 from crm.models import Client, Contract, Event
 
 
-
 class ClientAdmin(admin.ModelAdmin):
     list_display = ("full_name","company_name","id")
 

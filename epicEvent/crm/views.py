@@ -10,6 +10,19 @@ from rest_framework import status
 
 
 class ClientViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for handling requests related to the Client model.
+
+    The 'get_permissions' method customizes access control based on
+    the action being performed:
+    -For 'list' and 'retrieve' actions, any authenticated user
+    is allowed.
+    -For 'create', 'update', and 'partial_update', only commercial
+    users are allowed through IsCommercialUser.
+    - For 'destroy', access is denied to all users via DenyAll.
+    'perform_create' is overridden to set the 'sales_contact' field
+    to the current user automatically upon creation.
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
     
@@ -30,6 +43,24 @@ class ClientViewSet(viewsets.ModelViewSet):
     
 
 class ContractViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for handling requests related to the Contract model.
+    The 'get_permissions' method defines custom access controls based
+    actions performed and the user's role:
+    - For actions 'create', 'update', and 'partial_update':
+    - Users with a 'management' role are granted access via
+    the ManagementOnlyAccess permission.
+    - Users with a 'commercial' role are are granted access via
+    IsCommercialUserCont permission.
+    - All other users are denied access through the DenyAll
+    permission.
+    - For the 'destroy' action, all users are denied access
+    regardless of their role, using the DenyAll permission.
+    - For all other actions, including 'list' and 'retrieve', access
+    is granted to any authenticated user, ensuring that every authenticated
+    user can view and retrieve Contract records.
+"""
+    
     queryset = Contract.objects.all()
     serializer_class = ContractSerializer
     def get_permissions(self):
@@ -42,13 +73,16 @@ class ContractViewSet(viewsets.ModelViewSet):
                 return [DenyAll()]
         elif self.action == 'destroy':
             return [DenyAll()]
+        else:
+            return [permissions.IsAuthenticated()]
+        '''
         elif self.action in ['list', 'retrieve']:
             if self.request.user.role == 'support':
                 return [IsSupport()]
-            return [permissions.IsAuthenticated()]
+            return [permissions.IsAuthenticated()]        
         else:
             return [permissions.IsAuthenticated()]
-    
+        '''
     
       
   
@@ -56,7 +90,15 @@ class ContractViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer 
-    
+    """
+    Viewset for handling requests related to the Event model.
+    Methods:
+    - The get_permissions method allows any authenticated user
+    to list and retrieve events, only commercial users can create
+    events, management or support users (excluding commercial users)
+    can perform updates and partial updates, and denies toall users
+    the ability to delete events.    
+    """    
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             permission_classes = [permissions.IsAuthenticated]
@@ -68,8 +110,7 @@ class EventViewSet(viewsets.ModelViewSet):
             permission_classes = [DenyAll]
         else:            
             permission_classes = [permissions.IsAdminUser]
-        return [permission() for permission in permission_classes]   
-    
+        return [permission() for permission in permission_classes]       
 
     def destroy(self, request, *args, **kwargs):        
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -79,6 +120,10 @@ class EventViewSet(viewsets.ModelViewSet):
         
     
 class CommercialUnsignedContractsView(generics.ListAPIView):
+    """
+    View for listing all unsigned contracts associated with the commercial user.    
+    Returns an empty queryset if the user is not a commercial user.
+    """
     serializer_class = ContractSerializer
     permission_classes = [permissions.IsAuthenticated]  
 
@@ -89,6 +134,11 @@ class CommercialUnsignedContractsView(generics.ListAPIView):
         return Contract.objects.none()  
     
 class CommercialRemainingAmountContractsView(generics.ListAPIView):
+    """
+    View for listing all contracts with a remaining amount greater than zero 
+    associated with the commercial user. 
+    Provides an empty queryset if the user is not a commercial user.
+    """
     serializer_class = ContractSerializer
     permission_classes = [permissions.IsAuthenticated]  
 
@@ -99,12 +149,21 @@ class CommercialRemainingAmountContractsView(generics.ListAPIView):
         return Contract.objects.none() 
     
 class NullSupportEventsView(viewsets.ReadOnlyModelViewSet):
+    """
+    Viewset for listing events without an assigned support contact. 
+    Access limited to management users or superusers through ManagementOrSuperuserAccess.
+    """
     queryset = Event.objects.filter(support_contact__isnull=True)
     serializer_class = EventSerializer
     permission_classes = [ManagementOrSuperuserAccess]
     
     
 class SupportAssignedEventsView(viewsets.ReadOnlyModelViewSet):
+    """
+    Viewset for listing events that are assigned to the logged-in support user. 
+    Access restricted to authenticated users with the 'support' role 
+    via the "IsSupportUser" permission class.
+    """
     serializer_class = EventSerializer
     permission_classes = [IsSupportUser]
 

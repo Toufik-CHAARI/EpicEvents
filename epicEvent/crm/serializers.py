@@ -3,16 +3,32 @@ from .models import Client, Contract, Event
 from .models import CustomUser
 
 class ClientSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Client model, handling all fields ('__all__')
+    of the model.
+    """
     class Meta:
         model = Client
         fields = '__all__'
 
 class ContractSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Contract model, encompassing all fields
+    ('__all__') of the model.
+    """
     class Meta:
         model = Contract
         fields = '__all__'
 
 class EventSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Event model with custom handling for the
+    'support_contact' field,limited to users with
+    a 'support' role. Includes validation logic to enforce 
+    business rules such as checking for a signed contract
+    and appropriate user roles('management', 'support', 'commercial')
+    in relation to event handling.
+    """
     support_contact = serializers.PrimaryKeyRelatedField(
         queryset=CustomUser.objects.filter(role='support'), 
         required=False, allow_null=True
