@@ -99,7 +99,7 @@ class EventViewSet(viewsets.ModelViewSet):
     - The get_permissions method allows any authenticated user
     to list and retrieve events, only commercial users can create
     events, management or support users (excluding commercial users)
-    can perform updates and partial updates, and denies toall users
+    can perform updates and partial updates, and denies to all users
     the ability to delete events.
     """
 

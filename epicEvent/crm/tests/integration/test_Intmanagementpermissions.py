@@ -218,8 +218,7 @@ class TestManagementUserEventAccess:
                 datetime.datetime(2023, 1, 20)
             ),
             location="Test Location",
-            attendees=50,
-            client_name=self.client_obj,
+            attendees=50,            
             contract=self.contract,
         )
         assert self.management_user.role == "management"
@@ -248,8 +247,7 @@ class TestManagementUserEventAccess:
             "end_date": "2023-01-20",
             "location": "Test Location",
             "attendees": 50,
-            "notes": "Test Event",
-            "client_name": self.client_obj,
+            "notes": "Test Event",            
             "contract": self.contract,
         }
         response = self.client.post(url, event_data)

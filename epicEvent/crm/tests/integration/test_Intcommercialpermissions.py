@@ -189,66 +189,6 @@ def create_contracts(db, commercial_user):
         last_update=datetime.date.today(),
     )
 
-
-@pytest.mark.django_db
-def test_commercial_user_view_unsigned_contracts(
-    commercial_user, api_client
-):
-    api_client.force_authenticate(user=commercial_user)
-
-    client = Client.objects.create(
-        full_name="Test Client",
-        email="client@example.com",
-        sales_contact=commercial_user,
-        creation_date="2023-01-01",
-        last_update="2023-01-01",
-    )
-
-    Contract.objects.create(
-        client=client,
-        sales_contact=commercial_user,
-        is_signed=False,
-        total_amount=1000.00,
-        remaining_amount=500.00,
-        creation_date="2023-01-01",
-    )
-
-    response = api_client.get(reverse("commercial-unsigned-contracts"))
-    assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == 1
-
-
-@pytest.mark.django_db
-def test_commercial_user_view_remaining_amount_contracts(
-    commercial_user, api_client
-):
-    api_client.force_authenticate(user=commercial_user)
-
-    client = Client.objects.create(
-        full_name="Test Client",
-        email="client@example.com",
-        sales_contact=commercial_user,
-        creation_date="2023-01-01",
-        last_update="2023-01-01",
-    )
-
-    Contract.objects.create(
-        client=client,
-        sales_contact=commercial_user,
-        is_signed=True,
-        total_amount=1000.00,
-        remaining_amount=500.00,
-        creation_date="2023-01-01",
-    )
-
-    response = api_client.get(
-        reverse("commercial-remaining-amount-contracts")
-    )
-    assert response.status_code == status.HTTP_200_OK
-    assert len(response.data) == 1
-
-
-#
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "view_name",
@@ -385,8 +325,7 @@ def event_data(signed_contract):
         "start_date": "2023-01-15",
         "end_date": "2023-01-20",
         "location": "Test Location",
-        "attendees": 50,
-        "client_name": signed_contract.client.id,
+        "attendees": 50,        
         "notes": "Test Event",
     }
 

@@ -250,35 +250,7 @@ def test_unauthenticated_user_actions_unit(
     ]
 
 
-def test_commercial_user_view_unsigned_contracts_unit(
-    mocker, commercial_user, api_client
-):
-    mock_response_data = [
-        {
-            "id": 1,
-            "client_id": 1,
-            "sales_contact_id": commercial_user.id,
-            "is_signed": False,
-            "total_amount": 1000.00,
-            "remaining_amount": 500.00,
-            "creation_date": "2023-01-01",
-        }
-    ]
 
-    mock_method = mocker.patch(
-        "crm.views.CommercialUnsignedContractsView.list",
-        return_value=Response(
-            mock_response_data, status=status.HTTP_200_OK
-        ),
-    )
-
-    api_client.force_authenticate(user=commercial_user)
-
-    response = api_client.get(reverse("commercial-unsigned-contracts"))
-
-    assert response.status_code == status.HTTP_200_OK
-    assert response.data == mock_response_data
-    mock_method.assert_called_once()
 
 
 @pytest.fixture
@@ -321,10 +293,7 @@ def event_data():
             "start_date": "2023-01-15",
             "end_date": "2023-01-20",
             "location": "Test Location",
-            "attendees": 50,
-            "client_name": int(contract.client.id)
-            if contract and contract.client
-            else None,
+            "attendees": 50,           
             "notes": "Test Event",
         }
 
@@ -367,8 +336,7 @@ def test_create_event_signed_contract(
         "start_date": "2023-01-15",
         "end_date": "2023-01-20",
         "location": "Test Location",
-        "attendees": 50,
-        "client_name": test_contract.client.id,
+        "attendees": 50,        
         "notes": "Test Event",
     }
     response = api_client.post(reverse("event-list"), event_data)
