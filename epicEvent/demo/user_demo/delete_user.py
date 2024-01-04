@@ -1,10 +1,13 @@
 import requests
+from rich.console import Console
 
 
-delete_user_url = 'http://127.0.0.1:8000/api-auth/users/17/delete/' 
+console = Console()
+
+delete_user_url = 'http://127.0.0.1:8000/api-auth/users/19/delete/' 
 
 
-jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0MjA3MTgwLCJpYXQiOjE3MDQyMDExODAsImp0aSI6IjIyNDNkMmNjMzBmMjQwMzZhMzBhYzhmYjNiZjFjOTE5IiwidXNlcl9pZCI6N30.VXBtj6h2H3SivDLJ9KsNioa9Kn4MifubOIJtJy3pIqs'
+jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0MzcxMzY4LCJpYXQiOjE3MDQzNjUzNjgsImp0aSI6ImE5MTkzMTdmOGVhMDRhZjliMTkxM2M0NDcxZWNhYzdhIiwidXNlcl9pZCI6MTh9.N2f9qfIvtljhehhejTSa5bPZl0evUHjCvqphQGkmfW0'
 
 
 headers = {
@@ -15,7 +18,8 @@ headers = {
 response = requests.delete(delete_user_url, headers=headers)
 
 
-if response.status_code in [200, 204]:  
-    print("User deleted successfully.")
+if response.status_code in [200, 204]:
+    console.print("User deleted successfully.", style="bold green")
 else:
-    print(f"Failed to delete user. Status code: {response.status_code} - {response.text}")
+    error_message = f"Failed to delete user. Status code: {response.status_code} - {response.text}"
+    console.print(error_message, style="bold red")

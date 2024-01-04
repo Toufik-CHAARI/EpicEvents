@@ -3,12 +3,23 @@ import requests
 
 token_url = 'http://127.0.0.1:8000/api-auth/api/token/'  
 
-
+'''
 credentials = {
     'username': 'big.boss',
     'password': 'new_password'
 }
+'''
+'''
+credentials = {
+    'username': 'laeticia.casta',
+    'password': 'moi123'
+}
+'''
 
+credentials = {
+    'username': 'Linda.desuza',
+    'password': 'moi123'
+}
 
 response = requests.post(token_url, data=credentials)
 
