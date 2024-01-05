@@ -12,15 +12,16 @@ class UserListView(generics.ListAPIView):
     View for listing CustomUser objects.
     This view is designed to display a list of all users
     in the CustomUser model.
-    The "ManagementOnlyAccess" permission class restricts access to
-    this view to users with management roles only.
+    The "ManagementOrSuperuserAccess" permission
+    class allows only management users or superusers to update user
+    data.
     The 'get_object' method is inherited from the superclass
     and can be used to retrieve individual user instances as needed.
     """
 
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [ManagementOnlyAccess]
+    permission_classes = [ManagementOrSuperuserAccess]
 
     def get_object(self):
         return super().get_object()
@@ -43,13 +44,14 @@ class UserDetailView(generics.RetrieveAPIView):
     View for retrieving detailed information of a CustomUser object.
     This view is designed to provide detailed data for individual users
     based on the CustomUser model.
-    The "ManagementOnlyAccess" permission class restricts access to
-    this view to users with management roles only.
+    The "ManagementOrSuperuserAccess" permission
+    class allows only management users or superusers to update user
+    data.
     """
 
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
-    permission_classes = [ManagementOnlyAccess]
+    permission_classes = [ManagementOrSuperuserAccess]
 
 
 class UserUpdateView(generics.UpdateAPIView):

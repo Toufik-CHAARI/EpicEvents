@@ -2,6 +2,13 @@ import requests
 from rich.console import Console
 from rich.syntax import Syntax
 from rich import print as rprint
+import os
+
+
+jwt_tokenM = os.getenv('jwt_tokenM')
+jwt_tokenC = os.getenv('jwt_tokenC')
+jwt_tokenS = os.getenv('jwt_tokenS')
+
 
 console = Console()
 create_user_url = 'http://127.0.0.1:8000/api-auth/users/create/'  

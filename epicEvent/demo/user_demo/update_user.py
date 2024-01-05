@@ -1,5 +1,10 @@
 import requests
+import os
 
+
+jwt_tokenM = os.getenv('jwt_tokenM')
+jwt_tokenC = os.getenv('jwt_tokenC')
+jwt_tokenS = os.getenv('jwt_tokenS')
 
 update_user_url = 'http://127.0.0.1:8000/api-auth/users/12/update/'  
 

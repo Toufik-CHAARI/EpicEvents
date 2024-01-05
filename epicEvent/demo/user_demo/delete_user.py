@@ -1,6 +1,11 @@
 import requests
 from rich.console import Console
+import os
 
+
+jwt_tokenM = os.getenv('jwt_tokenM')
+jwt_tokenC = os.getenv('jwt_tokenC')
+jwt_tokenS = os.getenv('jwt_tokenS')
 
 console = Console()
 
