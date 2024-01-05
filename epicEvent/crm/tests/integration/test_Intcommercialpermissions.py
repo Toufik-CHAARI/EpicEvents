@@ -189,6 +189,7 @@ def create_contracts(db, commercial_user):
         last_update=datetime.date.today(),
     )
 
+
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "view_name",
@@ -325,7 +326,7 @@ def event_data(signed_contract):
         "start_date": "2023-01-15",
         "end_date": "2023-01-20",
         "location": "Test Location",
-        "attendees": 50,        
+        "attendees": 50,
         "notes": "Test Event",
     }
 

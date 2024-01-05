@@ -3,7 +3,6 @@ from .models import CustomUser
 from .serializers import CustomUserSerializer
 from .permissions import (
     ManagementOrSuperuserAccess,
-    ManagementOnlyAccess,
 )
 
 

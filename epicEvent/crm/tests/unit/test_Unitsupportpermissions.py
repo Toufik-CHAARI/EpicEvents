@@ -206,7 +206,6 @@ def test_support_user_can_update_assigned_event():
         attendees=2,
         notes="Great event",
         contract=contract_instance,
-        
     )
 
     update_data = {
@@ -253,7 +252,6 @@ def test_support_user_cannot_update_unassigned_event(
         attendees=2,
         notes="Great event",
         contract=contract_instance,
-        
     )
 
     api_client.force_authenticate(user=support_user)
@@ -292,7 +290,6 @@ def test_support_user_cannot_create_event(api_client, support_user):
         "attendees": 2,
         "notes": "Great event",
         "contract": contract_instance,
-        
     }
 
     response = api_client.post(reverse("event-list"), event_data)
@@ -329,7 +326,6 @@ def test_support_user_cannot_delete_event(api_client, support_user):
         attendees=2,
         notes="Great event",
         contract=contract_instance,
-        
     )
 
     api_client.force_authenticate(user=support_user)

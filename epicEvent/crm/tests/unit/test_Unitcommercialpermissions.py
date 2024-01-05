@@ -7,7 +7,6 @@ from unittest.mock import Mock
 from django.contrib.auth import get_user_model
 from crm.serializers import ClientSerializer
 from unittest.mock import MagicMock
-from rest_framework.response import Response
 
 
 @pytest.fixture
@@ -250,9 +249,6 @@ def test_unauthenticated_user_actions_unit(
     ]
 
 
-
-
-
 @pytest.fixture
 def client_assigned_to_commercial(mocker, commercial_user):
     mock_client = MagicMock()
@@ -293,7 +289,7 @@ def event_data():
             "start_date": "2023-01-15",
             "end_date": "2023-01-20",
             "location": "Test Location",
-            "attendees": 50,           
+            "attendees": 50,
             "notes": "Test Event",
         }
 
@@ -336,7 +332,7 @@ def test_create_event_signed_contract(
         "start_date": "2023-01-15",
         "end_date": "2023-01-20",
         "location": "Test Location",
-        "attendees": 50,        
+        "attendees": 50,
         "notes": "Test Event",
     }
     response = api_client.post(reverse("event-list"), event_data)

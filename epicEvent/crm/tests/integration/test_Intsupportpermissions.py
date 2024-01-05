@@ -208,7 +208,7 @@ class TestSupportUserEventAccess:
                 datetime.datetime(2023, 1, 20)
             ),
             location="Test Location",
-            attendees=50,            
+            attendees=50,
             contract=self.sample_contract,
         )
         self.unassigned_event = Event.objects.create(
@@ -220,7 +220,7 @@ class TestSupportUserEventAccess:
                 datetime.datetime(2023, 1, 20)
             ),
             location="Test Location",
-            attendees=50,            
+            attendees=50,
             contract=self.sample_contract,
         )
 
@@ -257,7 +257,7 @@ class TestSupportUserEventAccess:
             "end_date": "2023-01-20",
             "location": "Test Location",
             "attendees": 50,
-            "notes": "Test Event",            
+            "notes": "Test Event",
             "contract": self.sample_contract,
         }
         response = self.client.post(url, event_data)

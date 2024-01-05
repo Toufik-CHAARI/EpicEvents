@@ -43,7 +43,7 @@ class Contract(models.Model):
 
 
 class Event(models.Model):
-    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)    
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     support_contact = models.ForeignKey(

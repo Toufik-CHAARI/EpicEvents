@@ -324,7 +324,6 @@ def test_management_can_update_events():
         attendees=2,
         notes="grose soiree ",
         contract=contract,
-        
     )
 
     update_data = {
@@ -334,7 +333,6 @@ def test_management_can_update_events():
         "attendees": 200,
         "notes": "grosse soiree arrosée ",
         "contract": contract.id,
-        
     }
 
     url = reverse("event-detail", args=[event.id])
@@ -360,7 +358,6 @@ def test_management_cannot_create_events():
         "attendees": 25,
         "notes": "Hello Sed convallis tellus at urna iaculis",
         "contract": 7,
-        
     }
 
     response = api_client.post(url, event_data)
@@ -402,7 +399,6 @@ def test_management_cannot_delete_events():
         attendees=25,
         notes="Hello Sed convallis tellus at urna iaculis ultrices.",
         contract=contract,
-        
     )
 
     url = reverse("event-detail", args=[event.id])

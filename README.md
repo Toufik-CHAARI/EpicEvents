@@ -75,7 +75,7 @@ Endpoint: http://127.0.0.1:8000/api-auth/api/token/
 Http Method:
 POST: Get JWT Token by providing a valid username and password.
 
-Http parameters : none 
+Http parameter : none 
 Http Body:
 - username 
 - password 
@@ -87,7 +87,8 @@ Endpoint: http://127.0.0.1:8000/api-auth/users/create/
 HTTP Method 
 POST : Create new user
 Header must contain token
-Http Parameters : None
+
+Http Parameter : None
 Http Body :
 - username 
 - role 
@@ -101,24 +102,29 @@ Token-based authenticated superusers and users with management role.
 Endpoint: http://127.0.0.1:8000/api-auth/users/<int:user_id>/
 
 Http Method: 
-GET: Fetch data for a specified user.
+GET: Fetch data of a specified user.
 Header must contain token
+
 Http parameter : user_id
 Http body : none
 
 Permissions:
-Superusers and Authenticated users with commercial role.
+Superusers and Authenticated users with management role.
 
 
 ### 3. User list
 Endpoint: http://127.0.0.1:8000/api-auth/users
 
 Http Methods: 
-GET: Fetch data of all users.
+GET: Fetch data of all existing users.
 Header must contain token
+
+Http parameter : none
+Http body : none
+
 Permissions:
-Superusers Authenticated users with commercial role.
-Superusers can fetch data for all users.
+Authenticated Superusers and users with commercial role.
+
 
 ### 4. User update
 Endpoint: http://127.0.0.1:8000/api-auth/users/<int:user_id>/update/
@@ -127,16 +133,16 @@ Http Methods:
 PUT OR PATCH : Fetch data of all users.
 Header must contain token
 
-Parameters (all or partial fields depending http method)
-
-username :
-role :
-password :
-email:
+Http parameter : user_id
+Http body :  (all or partial fields depending http method)
+- username 
+- role 
+- password 
+- email
 
 Permissions:
-Superusers Authenticated users with commercial role.
-Superusers can fetch data for all users.
+Authenticated Superusers and users with commercial role.
+
 
 
 
@@ -144,12 +150,15 @@ Superusers can fetch data for all users.
 Endpoint: http://127.0.0.1:8000/api-auth/users/<int:user_id>/delete/
 
 Http Method: 
-DELETE : delete agiven user.
+DELETE : delete a given user.
 Header must contain token
 
+Http parameter : user_id
+Http body : None
+
 Permissions:
-Superusers Authenticated users with commercial role.
-Superusers can fetch data for all users.
+Authenticated Superusers and users with management role.
+
 
 **
 ## CRM
@@ -164,13 +173,14 @@ Http Method:
 POST : create a new client.
 Header must contain token
 
-Parameters
-full_name:
-email:
-phone :
-company_name :
-creation_date :
-last_update :
+Http parameter : None
+Http body : 
+- full_name
+- email
+- phone 
+- company_name 
+- creation_date 
+- last_update 
 
 Permissions:
 Only token-based authenticated users with commercial role. sales_contact attribute is by default = commercial.user_id 
@@ -185,8 +195,8 @@ Http Method:
 GET : Fetch data of all clientS.
 Header must contain token
 
-Parameters
-None
+Http parameter : None
+Http body : None
 
 Permissions:
 All token-based authenticated users.
@@ -195,14 +205,14 @@ All token-based authenticated users.
 
 ## Client detail
 
-Endpoint: http://127.0.0.1:8000/api/client/<int:cllient_id>/
+Endpoint: http://127.0.0.1:8000/api/client/<int:client_id>/
 
 Http Method: 
-GET : Fetch data of all clientS.
+GET : Fetch data of all clients.
 Header must contain token
 
-Parameters
-client_id in the url
+Http parameter : client_id
+Http body : None
 
 Permissions:
 All token-based authenticated users.
@@ -214,23 +224,24 @@ Endpoint: http://127.0.0.1:8000/api/client/<int:client_id>/
 Http Method: 
 PUT or PATCH : update all or partial fields of a given client.
 Header must contain token
-Parameter: client_id
 
-Body 
-full_name:
-email:
-phone :
-company_name :
-creation_date :
-last_update :
-sales_contact
+Http parameter : client_id
+Http body :
+
+- full_name
+- email
+- phone 
+- company_name 
+- creation_date 
+- last_update 
+- sales_contact
 
 Permissions:
 Token-based authenticated user assigned as sales_contact in client attributes.
 
 
 ### delete Client 
-unauthorized action
+unauthorized action !!!
 
 
 ## Contract entity
@@ -243,10 +254,12 @@ Http Method:
 GET : fetch data of all the existing contracts.
 Header must contain token
 
-Parameters : none
+Http parameter : None
+Http body : None
 
 Permissions:
 All Token-based authenticated users. 
+
 
 ### Contract details
 
@@ -256,7 +269,8 @@ Http Method:
 GET : fetch data of a given contract.
 Header must contain token
 
-Parameters : contract_id
+Http parameter : contract_id
+Http body : None
 
 Permissions:
 All Token-based authenticated users.
@@ -270,20 +284,17 @@ Http Method:
 POST : create a new contract.
 Header must contain token
 
-Http Parameter none
-
-Http Body
-total_amount:
-remaining_amount:
-creation_date (YYYY-MM-DD) :
-is_signed (boolean):
-client (client_id):
-sales contact (user_id):
-
+Http parameter : None
+Http Body :
+- total_amount
+- remaining_amount
+- creation_date (YYYY-MM-DD) 
+- is_signed (boolean)
+- client (client_id)
+- sales contact (user_id)
 
 Permissions:
 Only token-based authenticated users with management role. 
-
 
 
 ### Update Contract
@@ -294,43 +305,47 @@ Http Method:
 PUT OR PATCH : partial or total update of an existing contract.
 Header must contain token
 
-Parameters contract_id
-
-total_amount:
-remaining_amount:
-creation_date (YYYY-MM-DD) :
-is_signed (boolean):
-client (client_id):
-sales contact (user_id):
+Http parameter : contract_id
+Http Body :
+- total_amount
+- remaining_amount
+- creation_date (YYYY-MM-DD) 
+- is_signed (boolean)
+- client (client_id)
+- sales contact (user_id)
 
 Permissions:
 Token-based authenticated users with management role as well as users with commercial roles if commercial_id = sales_contact_id. 
 
 ### DELETE Contract 
-Unauthorized action
+Unauthorized action !!!
 
 
-### Fitered view : Unsigned Contracts
+### Filtered view : Unsigned Contracts
 
 Endpoint: http://127.0.0.1:8000/api/contracts/commercial/unsigned/
 
 Http Method: 
 GET: fetch all the existing unsigned contracts assigned to the current commercial user.
 Header must contain token
-Http Parameters : none
+
+Http parameter : None
+Http Body : None
 
 Permissions:
-Token-based authenticated users with commercial role  if commercial_user.id = sales_contact_id.
+Token-based authenticated users with commercial role if commercial_user.id = sales_contact_id.
 
 
-### Filtered view : Contracts wit positive remaining amounts
+### Filtered view : Contracts with positive remaining amounts
 
 Endpoint: http://127.0.0.1:8000/api/contracts/commercial/remaining-amount/
 
 Http Method: 
 GET: fetch all the existing contracts assigned to the current commercial user with remaining amounts greater than 0 .
 Header must contain token
-Http Parameters : none
+
+Http parameter : None
+Http Body : None
 
 Permissions:
 Token-based authenticated users with commercial role  if commercial_user.id = sales_contact_id.
@@ -348,9 +363,9 @@ Endpoint: http://127.0.0.1:8000/api/event/
 Http Method: 
 GET : fetch all the existing event.
 Header must contain token
-Http Parameter : none
 
-Http Body : none
+Http parameter : None
+Http Body : None
 
 Permissions:
 All token-based authenticated users. 
@@ -362,8 +377,10 @@ Endpoint: http://127.0.0.1:8000/api/event/<int:event_id>/
 Http Method: 
 GET : fetch all the existing event.
 Header must contain token
+
 Http Parameter : event_id
-Http Body : none
+Http Body : None
+
 Permissions:
 All token-based authenticated users. 
 
@@ -374,18 +391,16 @@ Endpoint: http://127.0.0.1:8000/api/event/
 Http Method: 
 POST : create a new event.
 Header must contain token
-Http Parameter : none
 
-Http Body
-
-start_date (YYYY-MM-DD) :
-end_date (YYYY-MM-DD) :
-location:
-attendees (INT):
-notes:
-contract(contract_id):
-support_contact(user_id):
-
+Http parameter : None
+Http Body : 
+- start_date (YYYY-MM-DD) 
+- end_date (YYYY-MM-DD) 
+- location:
+- attendees (INT)
+- notes
+- contract(contract_id)
+- support_contact(user_id)
 
 Permissions:
 token-based authenticated users with commercial role if the contract is signed and that commercial_user_id = contract.sales_contact.id. 
@@ -397,20 +412,18 @@ token-based authenticated users with commercial role if the contract is signed a
 Endpoint: http://127.0.0.1:8000/api/event/<int:event_id>/
 
 Http Method: 
-PUT OR PATCH : total or partial update an existing event.
+PUT OR PATCH : total or partial update of an existing event.
 Header must contain user token
+
 Http Parameter : event_id
-
-Http Body
-
-start_date (YYYY-MM-DD) :
-end_date (YYYY-MM-DD) :
-location:
-attendees (INT):
-notes:
-contract(contract_id):
-support_contact(user_id):
-
+Http Body :
+- start_date (YYYY-MM-DD) 
+- end_date (YYYY-MM-DD) 
+- location
+- attendees (INT)
+- notes
+- contract(contract_id)
+- support_contact(user_id)
 
 Permissions:
 token-based authenticated users with management role as well as users with support role if user_id = support_contact_id.
@@ -423,7 +436,9 @@ Endpoint: http://127.0.0.1:8000/api/null-role-events/
 Http Method: 
 GET : fetch all events where support_contact = null.
 Header must contain user token
-Http Parameter : none
+
+Http Parameter : None
+Http Body :None
 
 Permissions:
 token-based authenticated users with management role.
@@ -437,16 +452,19 @@ Http Method:
 GET : fetch all events assigned to the authenticated support_contact.
 Header must contain user token
 
-Http Parameter : none
+Http Parameter : None
+Http Body : None
+
 Permissions:
 token-based authenticated users with support role.
+
 
 ## Integration and Unit tests coverage report
 
 For detailed figures regarding tests coverage please run the following command :
 
-'export DB_PASSWORD=YOURPASSWORD'
-'pytest --cov=.'
+- 'export DB_PASSWORD=YOURPASSWORD'
+- 'pytest --cov=.'
 
 ## PEP8 Code compliance Report
 
@@ -465,7 +483,6 @@ In order to generate the reports please run the following commands
 
 - flake8 --format=html --htmldir=flake-report_crm_admin crm/admin.py
 - flake8 --format=html --htmldir=flake-report_crm_models crm/models.py
-- flake8 --format=html --htmldir=flake-report_crm_permissions crm/permissions.py
 - flake8 --format=html --htmldir=flake-report_crm_serializers crm/serializers.py
 - flake8 --format=html --htmldir=flake-report_crm_urls crm/urls.py
 - flake8 --format=html --htmldir=flake-report_crm_views crm/views.py
@@ -479,7 +496,7 @@ In order to generate the reports please run the following commands
 #### Unit tests
 
 - flake8 --format=html --htmldir=flake-report_crm_unit_tests_commercial crm/tests/unit/test_Unitcommercialpermissions.py
-- flake8 --format=html --htmldir=flake-report_crm_unit_tests_management crm/tests/integration/test_Unitmanagementpermissions.py
-- flake8 --format=html --htmldir=flake-report_crm_unit_tests_support crm/tests/integration/test_Unitsupportpermissions.py
+- flake8 --format=html --htmldir=flake-report_crm_unit_tests_management crm/tests/unit/test_Unitmanagementpermissions.py
+- flake8 --format=html --htmldir=flake-report_crm_unit_tests_support crm/tests/unit/test_Unitsupportpermissions.py
 
 ***
