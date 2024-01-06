@@ -18,12 +18,12 @@ jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIi
 
 # Headers with JWT token
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenC}'
 }
 
 # Client data to be created
 client_data = {
-    "full_name": "New Client",
+    "full_name": "testupdatedelete",
     "email": "newclient@example.com",
     "phone" : "0215456897",
     "company_name" : "Tesla",

@@ -10,13 +10,13 @@ jwt_tokenS = os.getenv('jwt_tokenS')
 console = Console()
 
 
-delete_contract_url = 'http://127.0.0.1:8000/api/contract/6/'  
+delete_contract_url = 'http://127.0.0.1:8000/api/contract/17/'  
 
 
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0Mzc4NDU1LCJpYXQiOjE3MDQzNzI0NTUsImp0aSI6ImMyZjhkYmJmMWMyNDQxODFhNTU3YmQwYjliMTVjZTU0IiwidXNlcl9pZCI6M30.ZfPtoMqUUiHx3BF7pQV8cZVCCfVTYPqis7dUIiHHxI8'
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenC}'
 }
 
 

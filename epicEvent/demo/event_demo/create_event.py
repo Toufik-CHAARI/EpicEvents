@@ -19,17 +19,17 @@ create_event_url = 'http://127.0.0.1:8000/api/event/'
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0Mzc4NDU1LCJpYXQiOjE3MDQzNzI0NTUsImp0aSI6ImMyZjhkYmJmMWMyNDQxODFhNTU3YmQwYjliMTVjZTU0IiwidXNlcl9pZCI6M30.ZfPtoMqUUiHx3BF7pQV8cZVCCfVTYPqis7dUIiHHxI8'
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}',
+    'Authorization': f'Bearer {jwt_tokenM}',
     'Content-Type': 'application/json'
 }
 
 
 event_data = {
-    "contract": 6,  
+    "contract": 17,  
     "start_date": datetime.now().isoformat(),
     "end_date": (datetime.now() + timedelta(days=1)).isoformat(),
-    "support_contact": 14, 
-    "location": "Event Location",
+    "support_contact": 24, 
+    "location": "Acapulco",
     "attendees": 50,
     "notes": "Event notes"  
 }

@@ -14,19 +14,19 @@ console = Console()
 create_user_url = 'http://127.0.0.1:8000/api-auth/users/create/'  
 
 
-jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0MzcxMzY4LCJpYXQiOjE3MDQzNjUzNjgsImp0aSI6ImE5MTkzMTdmOGVhMDRhZjliMTkxM2M0NDcxZWNhYzdhIiwidXNlcl9pZCI6MTh9.N2f9qfIvtljhehhejTSa5bPZl0evUHjCvqphQGkmfW0'
+jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0NTU2NzQxLCJpYXQiOjE3MDQ1NDIzNDEsImp0aSI6IjIwNjcyOWU4N2JmYTRjYjU4NTE0MmFkZTgxMTU3ZGU5IiwidXNlcl9pZCI6Mn0.jSZ6TVqnijHCDSwErEfLRAfSbQDZ1O0rU7AExe4JKik'
 
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenM}'
 }
 
 # User data to be created
 user_data = {
-    "username": "big.lewoski",
+    "username": "francis.leroi",
     "email": "newuser@example.com",
-    "role": "management",  
-    "password": "new_password"
+    "role": "support",  
+    "password": "moi123"
 }
 
 

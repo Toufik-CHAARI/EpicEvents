@@ -1,5 +1,7 @@
 from rest_framework import viewsets, permissions, generics
+from rest_framework.exceptions import NotFound
 from .models import Client, Contract, Event
+from authentication.models import CustomUser
 from .serializers import (
     ClientSerializer,
     ContractSerializer,
@@ -88,6 +90,33 @@ class ContractViewSet(viewsets.ModelViewSet):
             return [DenyAll()]
         else:
             return [permissions.IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        sales_contact_id = serializer.validated_data.get(
+            "sales_contact"
+        )
+
+        # Check if the sales_contact user exists
+        if sales_contact_id:
+            try:
+                sales_contact = CustomUser.objects.get(
+                    id=sales_contact_id.id
+                )
+            except CustomUser.DoesNotExist:
+                raise NotFound(
+                    detail="Sales contact user does not exist."
+                )
+
+            # Check if the user's role is 'commercial'
+            if sales_contact.role != "commercial":
+                return Response(
+                    {
+                        "detail": "user must have the role of commercial."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+        serializer.save()
 
 
 class EventViewSet(viewsets.ModelViewSet):

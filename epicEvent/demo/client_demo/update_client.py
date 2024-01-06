@@ -14,21 +14,21 @@ console= Console()
 
 
 
-update_url = 'http://127.0.0.1:8000/api/client/18/'
+update_url = 'http://127.0.0.1:8000/api/client/20/'
 
 
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0Mzc1NTc4LCJpYXQiOjE3MDQzNjk1NzgsImp0aSI6ImE3YjA0MjliOTVlNTQ2YzQ5ZjMwNmEwMTFmZjAwMzcwIiwidXNlcl9pZCI6M30.7ZzKeQHrnGm4WefA5olVU-9Pj2atcfcZoT6bnVNk3f4'
 
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenC}'
 }
 
 
 
 
 updated_data = {
-    "full_name": "Old Client",
+    "full_name": "Julie Lescaut",
     
 }
 

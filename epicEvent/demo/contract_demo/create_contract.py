@@ -15,15 +15,15 @@ create_contract_url = 'http://127.0.0.1:8000/api/contract/'
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0Mzc4NDU1LCJpYXQiOjE3MDQzNzI0NTUsImp0aSI6ImMyZjhkYmJmMWMyNDQxODFhNTU3YmQwYjliMTVjZTU0IiwidXNlcl9pZCI6M30.ZfPtoMqUUiHx3BF7pQV8cZVCCfVTYPqis7dUIiHHxI8'
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}',
+    'Authorization': f'Bearer {jwt_tokenM}',
     'Content-Type': 'application/json'
 }
 
 
 contract_data = {
-    "client": 1,  
-    "sales_contact": 2,  
-    "total_amount": 1000.00,
+    "client": 19,  
+    "sales_contact": 22,  
+    "total_amount": 11230.00,
     "remaining_amount": 500.00,
     "creation_date": "2023-01-01",
     "is_signed": False

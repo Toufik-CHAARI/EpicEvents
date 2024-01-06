@@ -10,13 +10,13 @@ jwt_tokenS = os.getenv('jwt_tokenS')
 console = Console()
 
 
-delete_event_url = 'http://127.0.0.1:8000/api/client/17/'  
+delete_event_url = 'http://127.0.0.1:8000/api/client/20/'  
 
 
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0MzkxODcyLCJpYXQiOjE3MDQzNzc0NzIsImp0aSI6IjkzM2Q4NmUxNzc3ODQ1OWI5NWQ2YzMxMThjZTU3YTMxIiwidXNlcl9pZCI6MTR9.fxDIkh6AnsxT2BsouV3EgvFvSKKwxEZtD9RZzVi3nnY'
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenM}'
 }
 
 

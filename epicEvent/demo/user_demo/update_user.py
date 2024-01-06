@@ -6,14 +6,14 @@ jwt_tokenM = os.getenv('jwt_tokenM')
 jwt_tokenC = os.getenv('jwt_tokenC')
 jwt_tokenS = os.getenv('jwt_tokenS')
 
-update_user_url = 'http://127.0.0.1:8000/api-auth/users/12/update/'  
+update_user_url = 'http://127.0.0.1:8000/api-auth/users/23/update/'  
 
 
 jwt_token = 'your_jwt_token'
 
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}'
+    'Authorization': f'Bearer {jwt_tokenS}'
 }
 
 
@@ -24,7 +24,7 @@ updated_data = {
 }
 
 
-response = requests.put(update_user_url, headers=headers, json=updated_data)  # For a full update
+response = requests.patch(update_user_url, headers=headers, json=updated_data)  # For a full update
 # response = requests.patch(update_user_url, headers=headers, json=updated_data)  # For a partial update
 
 

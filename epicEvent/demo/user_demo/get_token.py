@@ -8,21 +8,10 @@ jwt_tokenS = os.getenv('jwt_tokenS')
 
 token_url = 'http://127.0.0.1:8000/api-auth/api/token/'  
 
-'''
-credentials = {
-    'username': 'big.boss',
-    'password': 'new_password'
-}
-'''
-'''
-credentials = {
-    'username': 'laeticia.casta',
-    'password': 'moi123'
-}
-'''
+
 
 credentials = {
-    'username': 'Linda.desuza',
+    'username': 'christophe.dupont',
     'password': 'moi123'
 }
 

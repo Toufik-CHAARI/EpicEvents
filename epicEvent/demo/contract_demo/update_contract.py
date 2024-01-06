@@ -11,21 +11,22 @@ jwt_tokenS = os.getenv('jwt_tokenS')
 console = Console()
 
 
-update_contract_url = 'http://127.0.0.1:8000/api/contract/6/'  
+update_contract_url = 'http://127.0.0.1:8000/api/contract/18/'  
 
 
 jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA0Mzc4NDU1LCJpYXQiOjE3MDQzNzI0NTUsImp0aSI6ImMyZjhkYmJmMWMyNDQxODFhNTU3YmQwYjliMTVjZTU0IiwidXNlcl9pZCI6M30.ZfPtoMqUUiHx3BF7pQV8cZVCCfVTYPqis7dUIiHHxI8'
 
 headers = {
-    'Authorization': f'Bearer {jwt_token}',
+    'Authorization': f'Bearer {jwt_tokenM}',
     'Content-Type': 'application/json'
 }
 
 
 updated_data = {
-    "total_amount": 22222222,
-    "remaining_amount": 600.00,
-    "is_signed": True
+    #"total_amount": 3333333,
+    #"remaining_amount": 600.00,
+    "is_signed": True,
+    "sales_contact":22
    
 }
 

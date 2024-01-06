@@ -24,6 +24,19 @@ class ContractSerializer(serializers.ModelSerializer):
         model = Contract
         fields = "__all__"
 
+    def validate_sales_contact(self, value):
+        """
+        Check if the sales_contact has a 'commercial' role.
+        """
+        if (
+            not isinstance(value, CustomUser)
+            or value.role != "commercial"
+        ):
+            raise serializers.ValidationError(
+                "Sales contact must be a user with the role of commercial."
+            )
+        return value
+
 
 class EventSerializer(serializers.ModelSerializer):
     """

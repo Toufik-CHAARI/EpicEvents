@@ -175,6 +175,9 @@ def test_management_can_create_contracts():
     management_user = User.objects.create_user(
         username="manager", password="password", role="management"
     )
+    commercial_user = User.objects.create_user(
+        username="commercial", password="password", role="commercial"
+    )
     api_client.force_authenticate(user=management_user)
 
     url = reverse("contract-list")
@@ -194,7 +197,7 @@ def test_management_can_create_contracts():
         "creation_date": "2023-12-17",
         "is_signed": True,
         "client": client.id,
-        "sales_contact": management_user.id,
+        "sales_contact": commercial_user.id,
     }
 
     response = api_client.post(url, contract_data, format="json")
