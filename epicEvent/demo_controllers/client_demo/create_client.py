@@ -23,7 +23,7 @@ headers = {
 
 # Client data to be created
 client_data = {
-    "full_name": "testupdatedelete",
+    "full_name": "un client",
     "email": "newclient@example.com",
     "phone" : "0215456897",
     "company_name" : "Tesla",

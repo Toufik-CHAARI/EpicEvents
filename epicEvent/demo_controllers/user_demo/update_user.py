@@ -6,14 +6,14 @@ jwt_tokenM = os.getenv('jwt_tokenM')
 jwt_tokenC = os.getenv('jwt_tokenC')
 jwt_tokenS = os.getenv('jwt_tokenS')
 
-update_user_url = 'http://127.0.0.1:8000/api-auth/users/23/update/'  
+update_user_url = 'http://127.0.0.1:8000/api-auth/users/26/update/ksdgkhfg'  
 
 
 jwt_token = 'your_jwt_token'
 
 
 headers = {
-    'Authorization': f'Bearer {jwt_tokenS}'
+    'Authorization': f'Bearer {jwt_tokenM}'
 }
 
 

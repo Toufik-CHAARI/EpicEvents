@@ -23,7 +23,7 @@ headers = {
 
 # User data to be created
 user_data = {
-    "username": "francis.leroi",
+    "username": "francis.lalane",
     "email": "newuser@example.com",
     "role": "support",  
     "password": "moi123"

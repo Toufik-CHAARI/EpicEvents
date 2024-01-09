@@ -21,14 +21,14 @@ jwt_token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIi
 
 
 headers = {
-    'Authorization': f'Bearer {jwt_tokenC}'
+    'Authorization': f'Bearer {jwt_tokenM}'
 }
 
 
 
 
 updated_data = {
-    "full_name": "Julie Lescaut",
+    "full_name": "Juliette Binoche",
     
 }
 
