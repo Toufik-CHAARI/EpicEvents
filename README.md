@@ -499,4 +499,9 @@ In order to generate the reports please run the following commands
 - flake8 --format=html --htmldir=flake-report_crm_unit_tests_management crm/tests/unit/test_Unitmanagementpermissions.py
 - flake8 --format=html --htmldir=flake-report_crm_unit_tests_support crm/tests/unit/test_Unitsupportpermissions.py
 
+### Command line Interface
+flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/client_controller.py
+flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/contract_controller.py
+flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/event_controller.py
+flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/user_controller.py
 ***
