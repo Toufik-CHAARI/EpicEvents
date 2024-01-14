@@ -5,6 +5,7 @@
 
 - [Installation](#installation)
 - [Authentication](#authentication)
+- [Terminal Prompt](#Use-the-custom-made-Terminal-prompt)
 - [crm](#crm)
 - [Integration and Unit tests coverage report](#Integration-and-Unit-tests-coverage-report)
 - [PEP8 Code compliance Report](#pep8-code-compliance-report)
@@ -64,6 +65,19 @@ Please be advised that this api runs with python version 3.10.5
   'python3 manage.py runserver'
 
 
+## Use the custom made Terminal prompt
+
+- Open a second terminal
+
+- Activate virtual environment
+'source env/bin/activate'
+
+- Make sure you are at the root project and use the following command
+'python main.py'
+
+- use your superuser / admin account for authentication and create new users via terminal
+
+- Follow prompt instructions 
 
 ***
 
@@ -500,8 +514,8 @@ In order to generate the reports please run the following commands
 - flake8 --format=html --htmldir=flake-report_crm_unit_tests_support crm/tests/unit/test_Unitsupportpermissions.py
 
 ### Command line Interface
-flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/client_controller.py
-flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/contract_controller.py
-flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/event_controller.py
-flake8 --format=html --htmldir=flake-report_demo_controllers demo_controllers/user_controller.py
+flake8 --format=html --htmldir=flake-report_client_controller demo_controllers/client_controller.py
+flake8 --format=html --htmldir=flake-report_contract_controller demo_controllers/contract_controller.py
+flake8 --format=html --htmldir=flake-report_event_controller demo_controllers/event_controller.py
+flake8 --format=html --htmldir=flake-report_user_controller demo_controllers/user_controller.py
 ***
